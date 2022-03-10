@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<body>
+     <label>Course Code: </label>
+     <input type=text id=course_code value="LM118">
+     <button id=button>Submit!</button>
+
+<script>
+    var button = document.getElementById("button");
+    button.addEventListener("click", submitCourseCode);
+
+    function submitCourseCode(){
+            var course_code_input_value = document.getElementById('course_code').value;
+            var data = {'course_code': course_code_input_value};
+            var string_representation = JSON.stringify(data);
+
+            var opts = { method: 'post', body: string_representation}
+            fetch(
+                'http://0.0.0.0:8000/course-submit',
+                opts
+            ).then(
+                res => res.json()
+                ).then(
+                    data => displayMsg(data['msg'])
+                    )
+    }
+
+    function displayMsg(msg) {
+        // check if element exists
+        var text_element = document.getElementById('msg');
+        if(text_element) {
+            // exists
+            text_element.innerText = msg; // update the text
+            return true; // exit the function
+        }
+        // does not exist
+        // creation
+        text_element = document.createElement('p');
+        text_element.id = 'msg'
+        text_element.innerText = msg; // update the text
+        document.body.append(text_element); // append it to the body
+
+        return true; // exit the function
+    }
+</script>
+</body>
+</html>
+
+
